@@ -54,7 +54,7 @@
 
 - **Prompt name**: `day13-chat`
 - **Langfuse Project**: cmso3s4r303yzad0imhk4v3zq
-- **Prompts URL**: https://cloud.langfuse.com/project/cmso3s4r303yzad0imhk4v3zq/prompts
+- **Prompts URL**: https://cloud.langfuse.com/project/
 
 ### Version 1 (production)
 - **Labels**: `production`, `latest`
@@ -86,8 +86,7 @@
 ### Bằng chứng đổi label
 - Production label gắn với version 1
 - Baseline/Candidate labels gắn với version 2
-- Quản lý tại: https://cloud.langfuse.com/project/cmso3s4r303yzad0imhk4v3zq/prompts
-
+- Quản lý tại: https://cloud.langfuse.com/project/
 ## 5. Dashboard, SLO và alerts
 
 - Kết quả `validate_dashboard.py`: **HỢP LỆ: 6/6 panel**
@@ -145,17 +144,4 @@
 | `submission/evidence/evidence_summary.json` | Summary về incident |
 | `submission/evidence/langfuse_traces.json` | Chi tiết 47 Langfuse traces |
 
-## 10. Langfuse Configuration
 
-```env
-LANGFUSE_PUBLIC_KEY=pk-lf-982a3c91-36f2-4426-9767-fc50d3e8f0d6
-LANGFUSE_SECRET_KEY=sk-lf-e66ee2a2-fb14-4514-a1c4-f5f0bdeeb39b
-LANGFUSE_HOST=https://cloud.langfuse.com
-LANGFUSE_PROMPT_NAME=day13-chat
-LANGFUSE_PROMPT_LABEL=production
-```
-
-### Langfuse URLs
-- **Project**: https://cloud.langfuse.com/project/cmso3s4r303yzad0imhk4v3zq
-- **Traces**: https://cloud.langfuse.com/project/cmso3s4r303yzad0imhk4v3zq/traces
-- **Prompts**: https://cloud.langfuse.com/project/cmso3s4r303yzad0imhk4v3zq/prompts
