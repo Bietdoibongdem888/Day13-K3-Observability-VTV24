@@ -6,10 +6,10 @@
 - Repository URL: local (Day13-K3-Observability)
 - Commit SHA cuối: cd84f4f
 - Thành viên và vai trò: 
-  Diêm Công Thành – 2A202601689  | Tracing & Prompt Version | traces, metadata, prompt v1/v2, label/rollback | trace gắn đúng prompt version |
-  Nguyễn Quang Huy - 2A202601873 | Logging & PII |
-  Ngô Quốc Việt - 2A202601737 | Dashboard, SLO & Alert |
-  Phùng Văn Đạt - 2A202602012 | Incident, Report & Demo |
+  - Diêm Công Thành – 2A202601689  | Tracing & Prompt Version | traces, metadata, prompt v1/v2, label/rollback | trace gắn đúng prompt version |
+  - Nguyễn Quang Huy - 2A202601873 | Logging & PII |
+  - Ngô Quốc Việt - 2A202601737 | Dashboard, SLO & Alert |
+  - Phùng Văn Đạt - 2A202602012 | Incident, Report & Demo |
   
 ## 2. Kết quả kỹ thuật
 
