@@ -1,0 +1,51 @@
+{
+  "before_incident": [
+    {
+      "correlation_id": "req-660c7a10",
+      "latency_ms": 150,
+      "feature": "qa"
+    },
+    {
+      "correlation_id": "req-24948b47",
+      "latency_ms": 150,
+      "feature": "qa"
+    },
+    {
+      "correlation_id": "req-aa77998b",
+      "latency_ms": 150,
+      "feature": "qa"
+    }
+  ],
+  "after_incident": [
+    {
+      "correlation_id": "req-2f8d4f53",
+      "latency_ms": 2650,
+      "feature": "qa"
+    },
+    {
+      "correlation_id": "req-4aee9cdd",
+      "latency_ms": 2650,
+      "feature": "qa"
+    },
+    {
+      "correlation_id": "req-acab161e",
+      "latency_ms": 2650,
+      "feature": "summary"
+    }
+  ],
+  "pii_redaction_example": {
+    "service": "api",
+    "payload": {
+      "message_preview": "Here is my phone [REDACTED_PHONE_VN], what should be logged?"
+    },
+    "event": "request_received",
+    "correlation_id": "req-660c7a10",
+    "model": "claude-sonnet-4-5",
+    "env": "dev",
+    "user_id_hash": "64f6ec689229",
+    "feature": "qa",
+    "session_id": "s05",
+    "level": "info",
+    "ts": "2026-08-11T03:07:10.541865Z"
+  }
+}
