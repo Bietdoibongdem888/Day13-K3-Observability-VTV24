@@ -2,11 +2,11 @@
 
 ## 1. Thông tin nhóm
 
-- Tên nhóm: GiaoSuD
+- Tên nhóm: VTV24
 - Repository URL: local (Day13-K3-Observability)
 - Commit SHA cuối: cd84f4f
-- Thành viên và vai trò: GiaoSuD (solo)
-
+- Thành viên và vai trò: 
+  Diêm Công Thành – 2A202601689  | Tracing & Prompt Version | traces, metadata, prompt v1/v2, label/rollback | trace gắn đúng prompt version |
 ## 2. Kết quả kỹ thuật
 
 - Điểm `validate_logs.py`: **100/100**
