@@ -23,6 +23,6 @@
 13. Chỉ ra retrieval span `f6fd112443631073` mất 2.503 s, trong khi fake LLM mất 0.151 s.
 14. Dùng correlation ID `req-7506187a` tìm log `response_sent`, `feature=refund`, `latency_ms=2653`.
 15. Kết luận root cause, immediate mitigation, permanent fix và preventive measure.
-16. Kết thúc bằng 27 tests pass, log validator 100/100, dashboard validator 6/6, security audit và Git contribution thật.
+16. Kết thúc bằng 30 tests pass, log validator 100/100, dashboard validator 6/6, security audit và Git contribution thật.
 
 Không trình bày API evidence như ảnh UI. Nếu rubric yêu cầu Langfuse screenshot, đăng nhập UI và chụp đúng các trace IDs đã ghi trong report.

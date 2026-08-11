@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import concurrent.futures
 import json
+import re
 from pathlib import Path
 
 from fastapi.testclient import TestClient
@@ -96,6 +97,29 @@ def test_request_preserves_valid_id_and_logs_required_metadata(
         assert record["feature"] == "qa"
         assert record["model"]
         assert record["env"]
+
+
+def test_invalid_incoming_request_id_is_replaced(monkeypatch, tmp_path: Path) -> None:
+    log_path = tmp_path / "invalid-request-id.jsonl"
+    monkeypatch.setattr(logging_config, "LOG_PATH", log_path)
+
+    with TestClient(app) as client:
+        response = client.post(
+            "/chat",
+            headers={"x-request-id": "unsafe request id"},
+            json={
+                "user_id": "invalid-id-user",
+                "session_id": "invalid-id-session",
+                "feature": "qa",
+                "message": "Explain observability",
+            },
+        )
+
+    correlation_id = response.json()["correlation_id"]
+    assert response.status_code == 200
+    assert correlation_id != "unsafe request id"
+    assert response.headers["x-request-id"] == correlation_id
+    assert re.fullmatch(r"req-[0-9a-f]{8}", correlation_id)
 
 
 def test_concurrent_requests_do_not_leak_correlation_context(

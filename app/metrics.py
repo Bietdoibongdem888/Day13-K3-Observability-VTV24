@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 from collections import Counter
+from math import ceil
 from statistics import mean
 from threading import Lock
 
@@ -36,7 +37,8 @@ def percentile(values: list[int], p: int) -> float:
     if not values:
         return 0.0
     items = sorted(values)
-    idx = max(0, min(len(items) - 1, round((p / 100) * len(items) + 0.5) - 1))
+    rank = ceil((max(0, min(100, p)) / 100) * len(items))
+    idx = max(0, min(len(items) - 1, rank - 1))
     return float(items[idx])
 
 
@@ -46,8 +48,11 @@ def snapshot() -> dict:
         latencies = list(REQUEST_LATENCIES)
         costs = list(REQUEST_COSTS)
         quality_scores = list(QUALITY_SCORES)
+        error_count = sum(ERRORS.values())
+        requests_total = TRAFFIC + error_count
         return {
             "traffic": TRAFFIC,
+            "requests_total": requests_total,
             "latency_p50": percentile(latencies, 50),
             "latency_p95": percentile(latencies, 95),
             "latency_p99": percentile(latencies, 99),
@@ -56,5 +61,8 @@ def snapshot() -> dict:
             "tokens_in_total": sum(REQUEST_TOKENS_IN),
             "tokens_out_total": sum(REQUEST_TOKENS_OUT),
             "error_breakdown": dict(ERRORS),
+            "error_rate_pct": round(error_count / requests_total * 100, 4)
+            if requests_total
+            else 0.0,
             "quality_avg": round(mean(quality_scores), 4) if quality_scores else 0.0,
         }

@@ -1,4 +1,4 @@
-from app.pii import scrub_text
+from app.pii import scrub_text, scrub_value
 
 
 def test_scrub_email() -> None:
@@ -20,3 +20,17 @@ def test_scrub_common_vietnamese_phone_formats() -> None:
         out = scrub_text(f"Contact: {phone_number}")
         assert phone_number not in out
         assert "REDACTED_PHONE_VN" in out
+
+
+def test_cccd_tokens_and_tuple_values_are_redacted_idempotently() -> None:
+    raw = {
+        "identity": ("CCCD 012345678901", "Bearer synthetic-access-token"),
+        "nested": [{"access_token": "synthetic-token"}],
+    }
+
+    safe = scrub_value(raw)
+
+    assert safe["identity"][0] == "CCCD [REDACTED_CCCD]"
+    assert safe["identity"][1] == "[REDACTED_BEARER_TOKEN]"
+    assert safe["nested"][0]["access_token"] == "[REDACTED_SECRET]"
+    assert scrub_value(safe) == safe

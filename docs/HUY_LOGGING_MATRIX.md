@@ -14,9 +14,9 @@ MSSV: `2A202601873`. Matrix này giới hạn ở Role 1 và các integration po
 | Sanitization before persistence | `app/logging_config.py` | `scrub_event` processor | Pass | scrub trước renderer và file processor | integration test | validator | `02_validate_logs.txt` |
 | Safe error evidence | `app/main.py` | exception branch in `chat` | Pass | error level, type, status, latency, metadata, sanitized detail | error-path test | validator | `07_error_log.md` |
 | Token/cost/quality retention | `app/main.py` | success log | Pass | numeric agent results forwarded unchanged | chat observability test | validator/dashboard | response records |
-| Trace integration | `app/agent.py` | trace metadata | Pass locally | correlation ID lấy từ same contextvars | agent trace test | pytest | external screenshot pending |
+| Trace integration | `app/agent.py` | trace metadata | Pass | correlation ID lấy từ same contextvars | agent trace test | pytest + Langfuse API | API verified; trace UI screenshot remains an evidence gap |
 | Incident log handoff | `submission/evidence` | actual error/slow records | Pass | timestamp + correlation + event + relevant fields | runtime practice | validator | `07_error_log.md`, `15_official_incident.md` |
-| Git contribution | branch/history | Git | Partial | branch riêng đã tạo | `git status/log` | n/a | commit chưa tạo do author chưa xác minh |
+| Git contribution | branch/history | Git | Pass | target branch and Huy identity verified | `git status/log` | n/a | final integration commit is recorded after this document |
 
 Request flow đã xác minh:
 

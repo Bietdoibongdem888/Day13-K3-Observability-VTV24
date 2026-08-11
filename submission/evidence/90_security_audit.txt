@@ -2,16 +2,21 @@ Security audit performed 2026-08-11 after final regression:
 
 - .env exists locally and is ignored by .gitignore: YES
 - .env tracked/staged: NO
-- New actual Langfuse key/Bearer patterns in the staged diff: 0
-- Existing credential-like pattern match: one unchanged synthetic redaction fixture in `tests/test_logging_pii_integration.py`; no real credential
-- Tracked .venv, runtime pytest cache, or generated logs: NO
-- Runtime .pytest_cache and pytest-of-Huy after cleanup: ABSENT
-- Temporary Edge profile after screenshot: ABSENT
-- Uvicorn process and temporary server logs started by Codex: CLEANED
+- Actual Langfuse key/Bearer patterns in current branch or staged diff: 0
+- Credential-like matches are confined to synthetic redaction fixtures in two test files; none is a real credential
+- Tracked .venv, pytest cache, generated logs, or temporary runtime artifacts: NO
+- Runtime pytest temp/cache and Uvicorn files created by this audit: CLEANED
 - Raw PII leaks reported by log validator: 0
 - config/challenge.json modified: NO
-- git diff --check errors: 0
-- Dashboard screenshot is a real runtime capture and contains six panels
-- Langfuse API evidence contains IDs and metadata only, never credentials
+- Dashboard screenshot is a real 1920x1080 runtime capture with six panels
+- Langfuse API evidence contains identifiers/metadata only, never credentials
 
-data/sample_queries.jsonl intentionally contains synthetic PII fixtures required to test redaction. It is test input, not persisted output or submission evidence.
+Historical repository audit:
+
+- origin/main previously committed a real Langfuse credential pair in report content and later redacted it
+- Current local credentials are set and differ from that historically exposed pair
+- Current/main tip content is redacted, but Git history preserves the old exposure
+- Revocation cannot be proven from repository state; the owner must confirm the historical key was revoked/rotated
+- Divergent main commits were not merged into this submission branch
+
+`data/sample_queries.jsonl` intentionally contains synthetic PII fixtures used to test redaction. It is test input, not persisted output or submission evidence.

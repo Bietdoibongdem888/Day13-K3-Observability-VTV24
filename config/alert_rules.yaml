@@ -1,18 +1,30 @@
 alerts:
   - name: HighP95Latency
     severity: critical
+    metric: latency_p95_ms
+    operator: gt
+    threshold: 3000
+    duration: 5m
     condition: latency_p95_ms > 3000 for 5m
     type: symptom-based
     owner: observability-oncall
     runbook: docs/alerts.md#highp95latency
   - name: HighErrorRate
     severity: critical
+    metric: error_rate_pct
+    operator: gt
+    threshold: 2
+    duration: 5m
     condition: error_rate_pct > 2 for 5m
     type: symptom-based
     owner: observability-oncall
     runbook: docs/alerts.md#higherrorrate
   - name: QualityDegradation
     severity: warning
+    metric: quality_score_avg
+    operator: lt
+    threshold: 0.75
+    duration: 15m
     condition: quality_score_avg < 0.75 for 15m
     type: symptom-based
     owner: ai-quality-owner

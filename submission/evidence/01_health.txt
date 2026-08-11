@@ -1,5 +1,5 @@
 Command: GET http://127.0.0.1:8000/health
-Observed 2026-08-11:
-{"ok":true,"tracing_enabled":false,"incidents":{"rag_slow":false,"tool_fail":false,"cost_spike":false}}
+Observed 2026-08-11 during final network-enabled runtime verification:
+{"ok":true,"tracing_enabled":true,"incidents":{"rag_slow":false,"tool_fail":false,"cost_spike":false}}
 
-Interpretation: API healthy; Langfuse evidence is blocked because credentials were unavailable.
+Interpretation: API healthy; Langfuse credentials were loaded from the ignored local `.env`, and tracing was enabled. Credentials were never printed or copied into evidence.
