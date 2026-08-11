@@ -1,0 +1,8 @@
+Runtime diagnostic against uvicorn on 127.0.0.1:8000:
+- 20 /chat requests
+- ThreadPoolExecutor max_workers=10
+- 20 HTTP 200 responses
+- 20 unique correlation IDs
+- Response body correlation_id matched x-request-id header for every response
+
+Result: SUCCEEDED — no correlation ID collision or body/header mismatch observed.

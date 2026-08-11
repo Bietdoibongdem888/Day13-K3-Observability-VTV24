@@ -1,0 +1,13 @@
+Security audit performed 2026-08-11:
+
+- Tracked .env: NO
+- Tracked .venv: NO
+- Tracked __pycache__/.pytest_cache: NO
+- Tracked data/logs.jsonl or data/audit.jsonl: NO
+- Actual credential patterns in tracked files: NO MATCH
+- Raw email/phone/credit-card patterns in submission/: NO MATCH
+- config/challenge.json modified: NO
+- Merge conflict markers: NO MATCH
+- .env, generated logs and pytest cache are covered by .gitignore
+
+Note: data/sample_queries.jsonl intentionally contains synthetic PII test fixtures required to verify redaction. It is source test data, not persisted application output or submission evidence.

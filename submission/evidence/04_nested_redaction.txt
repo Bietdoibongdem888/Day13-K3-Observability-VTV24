@@ -1,0 +1,7 @@
+Diagnostic: supply nested dict/list to app.pii.scrub_value
+Result: SUCCEEDED
+
+Sanitized structure:
+{'headers': {'Authorization': '[REDACTED_SECRET]', 'api_key': '[REDACTED_SECRET]'}, 'items': ['[REDACTED_EMAIL]', {'password': '[REDACTED_SECRET]', 'phone': '[REDACTED_PHONE_VN]'}]}
+
+Original example email, phone, bearer value, API-key value and password value were absent from the sanitized serialization.
