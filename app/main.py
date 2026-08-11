@@ -1,9 +1,11 @@
 from __future__ import annotations
 
 import os
+import time
 
 from fastapi import FastAPI, HTTPException, Request
 from fastapi.responses import JSONResponse
+from starlette.concurrency import run_in_threadpool
 from structlog.contextvars import bind_contextvars
 
 from .agent import LabAgent
@@ -28,6 +30,7 @@ async def startup() -> None:
         "app_started",
         service=os.getenv("APP_NAME", "day13-observability-lab"),
         env=os.getenv("APP_ENV", "dev"),
+        correlation_id="system",
         payload={"tracing_enabled": tracing_enabled()},
     )
 
@@ -44,16 +47,23 @@ async def metrics() -> dict:
 
 @app.post("/chat", response_model=ChatResponse)
 async def chat(request: Request, body: ChatRequest) -> ChatResponse:
-    # TODO: Enrich logs with request context (user_id_hash, session_id, feature, model, env)
-    # bind_contextvars(...)
-    
+    request_started = time.perf_counter()
+    bind_contextvars(
+        user_id_hash=hash_user_id(body.user_id),
+        session_id=body.session_id,
+        feature=body.feature,
+        model=agent.model,
+        env=os.getenv("APP_ENV", "dev"),
+    )
+
     log.info(
         "request_received",
         service="api",
         payload={"message_preview": summarize_text(body.message)},
     )
     try:
-        result = agent.run(
+        result = await run_in_threadpool(
+            agent.run,
             user_id=body.user_id,
             feature=body.feature,
             session_id=body.session_id,
@@ -67,6 +77,7 @@ async def chat(request: Request, body: ChatRequest) -> ChatResponse:
             tokens_out=result.tokens_out,
             cost_usd=result.cost_usd,
             quality_score=result.quality_score,
+            status_code=200,
             payload={"answer_preview": summarize_text(result.answer)},
         )
         return ChatResponse(
@@ -80,11 +91,14 @@ async def chat(request: Request, body: ChatRequest) -> ChatResponse:
         )
     except Exception as exc:  # pragma: no cover
         error_type = type(exc).__name__
+        latency_ms = int((time.perf_counter() - request_started) * 1000)
         record_error(error_type)
         log.error(
             "request_failed",
             service="api",
             error_type=error_type,
+            status_code=500,
+            latency_ms=latency_ms,
             payload={"detail": str(exc), "message_preview": summarize_text(body.message)},
         )
         raise HTTPException(status_code=500, detail=error_type) from exc
@@ -94,7 +108,12 @@ async def chat(request: Request, body: ChatRequest) -> ChatResponse:
 async def enable_incident(name: str) -> JSONResponse:
     try:
         enable(name)
-        log.warning("incident_enabled", service="control", payload={"name": name})
+        log.warning(
+            "incident_enabled",
+            service="control",
+            env=os.getenv("APP_ENV", "dev"),
+            payload={"name": name},
+        )
         return JSONResponse({"ok": True, "incidents": status()})
     except KeyError as exc:
         raise HTTPException(status_code=404, detail=str(exc)) from exc
@@ -104,7 +123,12 @@ async def enable_incident(name: str) -> JSONResponse:
 async def disable_incident(name: str) -> JSONResponse:
     try:
         disable(name)
-        log.warning("incident_disabled", service="control", payload={"name": name})
+        log.warning(
+            "incident_disabled",
+            service="control",
+            env=os.getenv("APP_ENV", "dev"),
+            payload={"name": name},
+        )
         return JSONResponse({"ok": True, "incidents": status()})
     except KeyError as exc:
         raise HTTPException(status_code=404, detail=str(exc)) from exc
