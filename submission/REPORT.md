@@ -36,9 +36,9 @@
 - Xem chi tiết trong `submission/evidence/logs_sample.jsonl`
 
 ### Evidence trace Langfuse
-- **Project**: cmso3s4r303yzad0imhk4v3zq
+- **Project**: 
 - **Total traces**: 47
-- **URL**: https://cloud.langfuse.com/project/cmso3s4r303yzad0imhk4v3zq/traces
+- **URL**: https://cloud.langfuse.com/project/
 - Evidence file: `submission/evidence/langfuse_traces.json`
 
 ### Giải thích một span đáng chú ý
