@@ -1,0 +1,57 @@
+{
+  "total_traces": 47,
+  "v1_traces": 37,
+  "v2_traces": 10,
+  "v1_sample": [
+    {
+      "trace_id": "21c370dbfc754fdf97632c29ebbacb68",
+      "session_id": "session_baseline_4",
+      "prompt_label": "production",
+      "prompt_version": 1,
+      "query_preview": "How to use correlation IDs?",
+      "html_path": "/project/cmso3s4r303yzad0imhk4v3zq/traces/21c370dbfc754fdf97632c29ebbacb68"
+    },
+    {
+      "trace_id": "bbc354f906d802c1790ca7a2f07b5d44",
+      "session_id": "session_baseline_3",
+      "prompt_label": "production",
+      "prompt_version": 1,
+      "query_preview": "Best practices for logging",
+      "html_path": "/project/cmso3s4r303yzad0imhk4v3zq/traces/bbc354f906d802c1790ca7a2f07b5d44"
+    },
+    {
+      "trace_id": "10bd63ac1f044c47fac5b24defb3b391",
+      "session_id": "session_baseline_2",
+      "prompt_label": "production",
+      "prompt_version": 1,
+      "query_preview": "How to debug slow requests?",
+      "html_path": "/project/cmso3s4r303yzad0imhk4v3zq/traces/10bd63ac1f044c47fac5b24defb3b391"
+    }
+  ],
+  "v2_sample": [
+    {
+      "trace_id": "61da93859b321123ee15d0ca44e53803",
+      "session_id": "session_v2_direct_8",
+      "prompt_label": "baseline",
+      "prompt_version": 2,
+      "query_preview": "What is token optimization?",
+      "html_path": "/project/cmso3s4r303yzad0imhk4v3zq/traces/61da93859b321123ee15d0ca44e53803"
+    },
+    {
+      "trace_id": "f9679359d5e0df6a3287365caf140c7a",
+      "session_id": "session_v2_direct_7",
+      "prompt_label": "baseline",
+      "prompt_version": 2,
+      "query_preview": "How to analyze latency?",
+      "html_path": "/project/cmso3s4r303yzad0imhk4v3zq/traces/f9679359d5e0df6a3287365caf140c7a"
+    },
+    {
+      "trace_id": "1a43fc211252fad3a74753bfa8b5e737",
+      "session_id": "session_v2_direct_6",
+      "prompt_label": "baseline",
+      "prompt_version": 2,
+      "query_preview": "What are quality scores?",
+      "html_path": "/project/cmso3s4r303yzad0imhk4v3zq/traces/1a43fc211252fad3a74753bfa8b5e737"
+    }
+  ]
+}
