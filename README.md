@@ -92,6 +92,26 @@ submission/   báo cáo và evidence phải nộp
 
 Một người có thể giữ hai vai trò khi nhóm ít người; không tách thêm vai trò chỉ để chia nhỏ đầu việc.
 
+## Kết quả triển khai — Nguyễn Quốc Việt (MSSV: 2A202601737)
+
+### Vai trò phụ trách: toàn bộ 4 vai trò
+
+| Vai trò | Trạng thái | Chi tiết |
+|---|---|---|
+| Logging & PII | Hoàn thành | `middleware.py`: correlation ID (prefix `req-` + 8 ký tự hex), clear contextvars mỗi request, bind correlation_id vào structlog, thêm `x-request-id` và `x-response-time-ms` vào response headers. `main.py`: enrich log với `user_id_hash`, `session_id`, `feature`, `model`, `env`. `logging_config.py`: kích hoạt `scrub_event` processor. `pii.py`: thêm pattern passport và địa chỉ tiếng Việt. |
+| Tracing & Prompt | Hoàn thành | `prompt_management.py`: resolve prompt từ Langfuse với fallback local. Hỗ trợ đổi label qua `LANGFUSE_PROMPT_LABEL`. Metadata prompt được gắn vào trace. |
+| Dashboard, SLO & Alert | Hoàn thành | 6 panel hợp lệ theo contract: latency (p50/p95/p99), traffic (count/rate), errors (rate/breakdown), cost (sum/min), tokens (input/output), quality (mean). SLO: p95 <= 3000ms, error < 2%, cost <= 2.5 USD, quality >= 0.75. 3 alert rules: high_latency_p95 (critical), error_rate_spike (critical), cost_overrun (warning). |
+| Incident & Challenge | Hoàn thành | Challenge `day13-k3-observability-v1`: incident `rag_slow` gây sleep 2.5s trong `mock_rag.py`, dẫn đến latency 2650ms/request, tổng ~14s với 5 concurrent. Xác định root cause qua correlation ID `req-e0a99c11`. Fix: disable incident. Phòng ngừa: alert latency, monitor incident state. |
+
+### Kết quả validator
+
+| Validator | Kết quả |
+|---|---|
+| `validate_logs.py` | **100/100** (130 records, 76 correlation IDs, 0 PII leaks) |
+| `validate_dashboard.py` | **HỢP LỆ: 6/6 panel** |
+
+### Branch: `QuocViet`
+
 ## Lưu ý
 
 - App dùng fake LLM nên phần practice không cần API key trả phí.
