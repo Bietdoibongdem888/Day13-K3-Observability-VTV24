@@ -2,30 +2,31 @@ from __future__ import annotations
 
 import os
 import time
+from contextlib import asynccontextmanager
+from pathlib import Path
 
 from fastapi import FastAPI, HTTPException, Request
-from fastapi.responses import JSONResponse
+from fastapi.responses import HTMLResponse, JSONResponse
 from starlette.concurrency import run_in_threadpool
 from structlog.contextvars import bind_contextvars
 
 from .agent import LabAgent
+from .dashboard import load_recent_records, render_dashboard
 from .incidents import disable, enable, status
 from .logging_config import configure_logging, get_logger
 from .metrics import record_error, snapshot
 from .middleware import CorrelationIdMiddleware
 from .pii import hash_user_id, summarize_text
 from .schemas import ChatRequest, ChatResponse
-from .tracing import tracing_enabled
+from .tracing import flush_traces, tracing_enabled
 
 configure_logging()
 log = get_logger()
-app = FastAPI(title="Day 13 Observability Lab")
-app.add_middleware(CorrelationIdMiddleware)
 agent = LabAgent()
 
 
-@app.on_event("startup")
-async def startup() -> None:
+@asynccontextmanager
+async def lifespan(_: FastAPI):
     log.info(
         "app_started",
         service=os.getenv("APP_NAME", "day13-observability-lab"),
@@ -33,6 +34,14 @@ async def startup() -> None:
         correlation_id="system",
         payload={"tracing_enabled": tracing_enabled()},
     )
+    try:
+        yield
+    finally:
+        flush_traces()
+
+
+app = FastAPI(title="Day 13 Observability Lab", lifespan=lifespan)
+app.add_middleware(CorrelationIdMiddleware)
 
 
 @app.get("/health")
@@ -43,6 +52,11 @@ async def health() -> dict:
 @app.get("/metrics")
 async def metrics() -> dict:
     return snapshot()
+
+
+@app.get("/dashboard", response_class=HTMLResponse)
+async def dashboard() -> str:
+    return render_dashboard(load_recent_records(Path("data/logs.jsonl")))
 
 
 @app.post("/chat", response_model=ChatResponse)

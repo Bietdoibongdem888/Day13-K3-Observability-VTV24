@@ -3,12 +3,14 @@ from __future__ import annotations
 import time
 from dataclasses import dataclass
 
+from structlog.contextvars import get_contextvars
+
 from . import metrics
 from .mock_llm import FakeLLM
 from .mock_rag import retrieve
 from .pii import hash_user_id, summarize_text
 from .prompt_management import resolve_prompt
-from .tracing import get_langfuse_client, observe, tracing_enabled
+from .tracing import get_langfuse_client, observe_when_enabled, tracing_enabled
 
 
 @dataclass
@@ -26,7 +28,9 @@ class LabAgent:
         self.model = model
         self.llm = FakeLLM(model=model)
 
-    @observe(as_type="generation", capture_input=False, capture_output=False)
+    @observe_when_enabled(
+        as_type="generation", capture_input=False, capture_output=False, root=True
+    )
     def run(self, user_id: str, feature: str, session_id: str, message: str) -> AgentResult:
         started = time.perf_counter()
         docs = retrieve(message)
@@ -43,16 +47,28 @@ class LabAgent:
         latency_ms = int((time.perf_counter() - started) * 1000)
         cost_usd = self._estimate_cost(response.usage.input_tokens, response.usage.output_tokens)
 
+        request_context = get_contextvars()
+        trace_metadata = {
+            "prompt_name": prompt.name,
+            "prompt_label": prompt.label,
+            "prompt_version": prompt.version,
+            "prompt_source": prompt.source,
+        }
+        if request_context.get("correlation_id"):
+            trace_metadata.update(
+                {
+                    "correlation_id": request_context["correlation_id"],
+                    "feature": feature,
+                    "model": self.model,
+                    "environment": request_context.get("env", "dev"),
+                }
+            )
+
         langfuse_client.update_current_trace(
             user_id=hash_user_id(user_id),
             session_id=session_id,
             tags=["lab", feature, self.model],
-            metadata={
-                "prompt_name": prompt.name,
-                "prompt_label": prompt.label,
-                "prompt_version": prompt.version,
-                "prompt_source": prompt.source,
-            },
+            metadata=trace_metadata,
         )
         langfuse_client.update_current_generation(
             model=self.model,

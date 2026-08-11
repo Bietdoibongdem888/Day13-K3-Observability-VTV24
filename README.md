@@ -43,6 +43,7 @@ Trong lab này, Langfuse dùng cho trace và prompt versioning; nguồn chuẩn 
 4. Mở `data/logs.jsonl` và ghi lại những trường còn thiếu.
 5. Chạy `python scripts/validate_logs.py` để lấy baseline.
 6. Chạy `python scripts/validate_dashboard.py` để hiểu contract của dashboard.
+7. Mở `http://127.0.0.1:8000/dashboard` để xem dashboard runtime sáu panel từ log thật.
 
 Kết quả đúng ở bước 6 phải có dòng `HỢP LỆ: 6/6 panel`. Lệnh này chỉ kiểm tra contract; ảnh dashboard runtime vẫn phải nộp.
 
@@ -97,5 +98,6 @@ Một người có thể giữ hai vai trò khi nhóm ít người; không tách
 - App dùng fake LLM nên phần practice không cần API key trả phí.
 - Langfuse chung/cloud là cách mặc định; Docker Compose local chỉ là lựa chọn dự phòng trong `SETUP.md`.
 - Không có Langfuse key, app vẫn chạy bằng prompt local nhưng bạn không có bằng chứng trace/prompt version để lấy trọn điểm.
+- Khi có key, có thể dùng `scripts/manage_prompts.py` để bootstrap/promote/rollback prompt theo hướng dẫn; script sẽ dừng thay vì tạo dữ liệu giả nếu thiếu credentials.
 - `validate_logs.py` chỉ là kiểm tra kỹ thuật nhanh, không phải điểm cuối cùng.
 - Không commit `.env`, API key, `.venv/` hoặc log chứa dữ liệu nhạy cảm.

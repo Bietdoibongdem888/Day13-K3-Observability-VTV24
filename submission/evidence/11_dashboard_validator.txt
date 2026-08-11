@@ -1,0 +1,12 @@
+Command: python scripts/validate_dashboard.py
+HỢP LỆ: 6/6 panel có trong dashboard contract.
+
+Runtime check:
+GET /dashboard -> HTTP 200
+Rendered <section> panel count -> 6
+Source -> data/logs.jsonl
+Default time range -> 60 minutes
+Refresh -> 30 seconds
+Title, all six panel names, units and all six threshold blocks -> VERIFIED by runtime HTML inspection
+
+Screenshot: pending; no browser instance was available in this execution environment. Follow `DASHBOARD_SCREENSHOT_INSTRUCTIONS.md` and do not count the instruction file as evidence.

@@ -23,6 +23,16 @@ Nếu Langfuse không khả dụng, app dùng template local và trace metadata 
 
 ## Việc cần làm
 
+Có thể thực hiện bằng UI Langfuse hoặc script có kiểm tra credentials:
+
+```bash
+python scripts/manage_prompts.py bootstrap
+python scripts/manage_prompts.py promote-v2
+python scripts/manage_prompts.py rollback-v1
+```
+
+Script không tạo dữ liệu local giả: khi thiếu key hợp lệ, nó dừng với lỗi rõ ràng.
+
 1. Tạo version 1, gắn labels `baseline` và `production`.
 2. Tạo version 2 với một thay đổi nhỏ về format hoặc độ dài câu trả lời, gắn label `candidate`.
 3. Chạy cùng một input với `LANGFUSE_PROMPT_LABEL=baseline` và `candidate`.

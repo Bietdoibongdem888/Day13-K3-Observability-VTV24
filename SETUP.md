@@ -88,11 +88,12 @@ python scripts/validate_dashboard.py
 python -m pytest -q
 ```
 
-API mặc định chạy tại `http://127.0.0.1:8000`; health check ở `/health`, metrics ở `/metrics`.
+API mặc định chạy tại `http://127.0.0.1:8000`; health check ở `/health`, metrics ở `/metrics` và dashboard sáu panel ở `/dashboard`.
 
 ## Lỗi thường gặp
 
 - `ModuleNotFoundError`: kiểm tra virtual environment đã được activate và chạy lại `pip install -r requirements.txt`.
+- Pytest `WinError 5` trong `%TEMP%`: chạy `powershell -ExecutionPolicy Bypass -File scripts/run_tests.ps1`. Helper tạo một basetemp GUID mới cho mỗi run, tắt cache provider trong run đó và dọn đúng thư mục tạm vừa tạo; không sửa/skip test dùng `tmp_path`.
 - Không có `data/logs.jsonl`: bảo đảm API đang chạy trước khi chạy load test.
 - Không thấy trace: kiểm tra ba biến `LANGFUSE_*`, sau đó khởi động lại API.
 - Trace ghi `prompt_source=local-fallback`: kiểm tra host/key và prompt name/label trong `.env`.
